@@ -7,7 +7,7 @@ import { useToast } from '@/components/providers/ToastProvider';
 import { getSupabase } from '@/lib/supabase/client';
 import { coins, coinsZeb, dateTime, errMsg } from '@/lib/format';
 import { getOperationMode } from '@/lib/operation-mode';
-import { getEmolaConfig } from '@/lib/payments/emola';
+import { formatMozambicanPhone, getEmolaConfig, isValidEmolaNumber } from '@/lib/payments/emola';
 import { useRealtime } from '@/lib/hooks/useRealtime';
 import type { NotificationRow, Transaction, WalletRequest, WalletRequestType } from '@/lib/types';
 
@@ -23,9 +23,13 @@ const TX_TYPE_LABEL: Record<string, string> = {
 
 const PAYMENT_METHODS = [{ id: 'E-Mola', label: '📱 E-Mola (Movitel)' }];
 
+const EMOLA_CONFIG = getEmolaConfig();
+
 const TRANSFER_TARGET = {
-  name: getEmolaConfig().agentName,
-  number: getEmolaConfig().agentNumber ? `+258 ${getEmolaConfig().agentNumber}` : '',
+  name: EMOLA_CONFIG.agentName,
+  number: isValidEmolaNumber(EMOLA_CONFIG.agentNumber)
+    ? formatMozambicanPhone(EMOLA_CONFIG.agentNumber)
+    : '',
   label: 'E-Mola',
 };
 
