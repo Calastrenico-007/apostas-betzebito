@@ -97,7 +97,6 @@ export default function AdminConfiguracoesPage() {
             required
           />
           <p className="text-[11px] leading-relaxed text-slate-400">
-            Calculada sobre o retorno bruto total — inclui o valor apostado e qualquer bónus. Exemplo:
             Calculada sobre o valor bruto pago, incluindo aposta e bónus em ganhos e cash-outs. Exemplo:
             num retorno bruto de 1.000 MT, a conta recebe 1.000 MT menos a taxa configurada. 0% não retém
             nada. Confirma a taxa aplicável com um profissional local antes de a usar.
