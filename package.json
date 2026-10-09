@@ -1,0 +1,35 @@
+{
+  "name": "betzebi-sportsbook",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Betzebi Sportsbook — plataforma de apostas com carteira e operação financeira manual.",
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0 -p 3000",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0 -p 3000",
+    "typecheck": "tsc --noEmit",
+    "check:env": "node scripts/check-env.mjs",
+    "check:db": "node scripts/test_db.mjs",
+    "outbox:once": "node scripts/send-outbox.mjs --once",
+    "outbox:watch": "node scripts/send-outbox.mjs"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.3",
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.17"
+  }
+}

@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --betzebi-bg: #070d14;
+  --betzebi-panel: #0e1724;
+  --betzebi-panel-elevated: #132032;
+  --betzebi-line: rgba(255, 255, 255, 0.08);
+  --betzebi-brand: #10b981;
+  --betzebi-brand-mint: #34d399;
+  --betzebi-brand-ink: #022415;
+  --betzebi-gold: #f59e0b;
+  --betzebi-text: #f1f5f9;
+  --betzebi-muted: #8e9eaf;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  min-height: 100%;
+  background-color: #070d14 !important;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(16, 185, 129, 0.12), transparent 32%),
+    radial-gradient(circle at 85% 10%, rgba(14, 165, 233, 0.06), transparent 28%),
+    linear-gradient(180deg, #070d14 0%, #09111b 100%) !important;
+  color: var(--betzebi-text) !important;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  background-attachment: fixed;
+  color: var(--betzebi-text) !important;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Custom sleek dark scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #09111b;
+}
+::-webkit-scrollbar-thumb {
+  background: #1b283b;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #253852;
+}
+
+@layer base {
+  a {
+    @apply transition-colors duration-150;
+  }
+  ::selection {
+    background: rgba(16, 185, 129, 0.35);
+    color: #ffffff;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-brand px-4 py-2.5 font-bold text-brand-ink transition-all duration-150 hover:bg-brand-light active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-brand shadow-glow-sm hover:shadow-glow;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-xl bg-white/[0.04] px-3 py-2 text-sm font-semibold text-slate-200 ring-1 ring-white/[0.08] transition hover:bg-white/[0.08] hover:text-white hover:ring-white/[0.15] active:scale-[0.98] disabled:opacity-50;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center rounded-xl bg-red-600/90 px-3.5 py-2 text-sm font-bold text-white transition hover:bg-red-500 active:scale-[0.98] disabled:opacity-50 shadow-[0_4px_16px_rgba(239,68,68,0.25)];
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center rounded-xl bg-gold px-4 py-2 font-bold text-slate-950 transition hover:bg-gold-light active:scale-[0.98] disabled:opacity-50 shadow-[0_4px_16px_rgba(245,158,11,0.25)];
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-white/[0.08] bg-[#0a121c] px-3.5 py-2.5 text-white outline-none transition placeholder:text-slate-500 focus:border-brand/70 focus:ring-1 focus:ring-brand/40;
+  }
+
+  .card {
+    @apply rounded-2xl border border-white/[0.07] bg-panel p-4 shadow-card backdrop-blur-sm transition-colors;
+  }
+
+  .card-interactive {
+    @apply card hover:border-white/[0.14] hover:bg-[#101b2a];
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400;
+  }
+
+  .tab {
+    @apply rounded-full px-4 py-1.5 text-sm font-semibold transition-all whitespace-nowrap;
+  }
+
+  .tab-on {
+    @apply bg-brand text-brand-ink shadow-glow-sm;
+  }
+
+  .tab-off {
+    @apply bg-white/[0.04] text-slate-300 ring-1 ring-white/[0.07] hover:bg-white/[0.08] hover:text-white;
+  }
+
+  .brand-mark {
+    display: inline-grid;
+    place-items: center;
+    border-radius: 0.75rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #022415;
+    font-size: 0.95rem;
+    font-weight: 900;
+    box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
+  }
+
+  .brand-wordmark {
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, #ffffff 20%, #a7f3d0 70%, #34d399 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Chip do saldo / Zebi Coins */
+  .balance-chip {
+    @apply inline-flex items-center gap-1.5 rounded-xl border border-gold/30 bg-gold/10 px-3 py-1.5 text-sm font-black tabular-nums text-gold shadow-[0_2px_12px_rgba(245,158,11,0.12)];
+  }
+
+  /* Badge de status */
+  .badge-live {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/15 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-red-400;
+  }
+
+  .badge-scheduled {
+    @apply inline-flex items-center gap-1 rounded-full border border-brand/20 bg-brand/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-light;
+  }
+
+  .badge-closed {
+    @apply inline-flex items-center gap-1 rounded-full border border-amber-500/25 bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-300;
+  }
+
+  .badge-settled {
+    @apply inline-flex items-center gap-1 rounded-full border border-sky-500/25 bg-sky-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-sky-300;
+  }
+
+  .badge-void {
+    @apply inline-flex items-center gap-1 rounded-full border border-slate-500/25 bg-slate-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-300;
+  }
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  opacity: 0.3;
+}
