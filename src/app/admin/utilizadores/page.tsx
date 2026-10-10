@@ -6,16 +6,10 @@ import { coins, coinsZeb, dateTime, errMsg } from '@/lib/format';
 import { useRealtime } from '@/lib/hooks/useRealtime';
 import type { Profile, WalletRequest, WalletRequestStatus } from '@/lib/types';
 
-type OperatorCreditPool = {
-  available_amount: number;
-};
-
 export default function AdminUtilizadores() {
   const toast = useToast();
   const [users, setUsers] = useState<Profile[]>([]);
   const [requests, setRequests] = useState<WalletRequest[]>([]);
-  const [creditPool, setCreditPool] = useState<OperatorCreditPool | null>(null);
-  const [creditPoolInput, setCreditPoolInput] = useState('');
   const [q, setQ] = useState('');
   const [adj, setAdj] = useState<Record<string, { amount: string; reason: string }>>({});
   const [open, setOpen] = useState<string | null>(null);
@@ -24,7 +18,6 @@ export default function AdminUtilizadores() {
     const [
       { data: profilesData, error: profilesError },
       { data: reqData, error: reqError },
-      { data: poolData, error: poolError },
     ] =
       await Promise.all([
         getSupabase()
@@ -37,28 +30,20 @@ export default function AdminUtilizadores() {
           .select('*')
           .order('created_at', { ascending: false })
           .limit(200),
-        getSupabase()
-          .from('operator_credit_pool')
-          .select('available_amount')
-          .eq('id', true)
-          .maybeSingle(),
       ]);
 
     if (profilesError) toast(errMsg(profilesError), 'erro');
     if (reqError) toast(errMsg(reqError), 'erro');
-    if (poolError) toast(errMsg(poolError), 'erro');
 
     setUsers((profilesData as Profile[]) || []);
     setRequests((reqData as WalletRequest[]) || []);
-    setCreditPool((poolData as OperatorCreditPool) || null);
-    if (poolData) setCreditPoolInput(String(poolData.available_amount));
   }, [toast]);
 
   useEffect(() => {
     load();
   }, [load]);
 
-  useRealtime(['profiles', 'wallet_requests', 'operator_credit_pool'], load);
+  useRealtime(['profiles', 'wallet_requests'], load);
 
   async function adjust(u: Profile, sign: 1 | -1) {
     const a = adj[u.id] || { amount: '', reason: '' };
@@ -100,22 +85,6 @@ export default function AdminUtilizadores() {
     load();
   }
 
-  async function saveCreditPool(e: React.FormEvent) {
-    e.preventDefault();
-    const available = Number(creditPoolInput.replace(',', '.'));
-    if (!Number.isFinite(available) || available < 0) {
-      return toast('Indica um valor disponível igual ou superior a zero', 'erro');
-    }
-
-    const { data, error } = await getSupabase().rpc('admin_set_operator_credit_pool', {
-      p_available: available,
-    });
-    if (error) return toast(errMsg(error), 'erro');
-
-    toast(`Fundo para créditos manuais definido em ${coins(Number(data))} MT.`, 'ok');
-    load();
-  }
-
   const pendingRequests = requests.filter((r) => r.status === 'pendente');
   const filteredUsers = users.filter(
     (u) =>
@@ -144,44 +113,9 @@ export default function AdminUtilizadores() {
         </div>
       </div>
 
-      <section className="rounded-2xl border border-gold/25 bg-gold/5 p-4 shadow-card space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h2 className="text-sm font-black uppercase tracking-wider text-white">
-              Fundo disponível para créditos manuais
-            </h2>
-            <p className="mt-1 text-xs text-slate-400">
-              Define apenas o dinheiro próprio que reservaste realmente para ajustes e bónus. Depósitos confirmados são creditados separadamente após verificares o recebimento.
-            </p>
-          </div>
-          <div className="text-right">
-            <div className="text-[10px] uppercase tracking-wider text-slate-500">Disponível</div>
-            <div className="text-xl font-black tabular-nums text-gold">
-              {creditPool ? coins(creditPool.available_amount) : '—'} MT
-            </div>
-          </div>
-        </div>
-
-        <form onSubmit={saveCreditPool} className="flex flex-col gap-2 sm:flex-row">
-          <label className="sr-only" htmlFor="operator-credit-pool">Fundo disponível para créditos manuais em MT</label>
-          <input
-            id="operator-credit-pool"
-            className="input !py-2 text-xs font-bold"
-            inputMode="decimal"
-            min="0"
-            placeholder="Valor realmente reservado (MT)"
-            value={creditPoolInput}
-            onChange={(e) => setCreditPoolInput(e.target.value)}
-            required
-          />
-          <button type="submit" className="btn-primary shrink-0 !py-2 text-xs font-black">
-            Guardar fundo disponível
-          </button>
-        </form>
-        <p className="text-[11px] text-amber-100/80">
-          Créditos manuais acima do fundo serão recusados. Esta reserva limita ajustes administrativos; não substitui reconciliação de pagamentos nem controlo de prémios e obrigações de apostas.
-        </p>
-      </section>
+      <p className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 text-xs text-amber-100/80">
+        Créditos administrativos não confirmam recebimento de dinheiro. Para depósitos, confirma primeiro a entrada real do valor antes de aprovar o pedido; os ajustes ficam registados no extrato.
+      </p>
 
       {/* SECÇÃO 1: PEDIDOS DE CARTEIRA PENDENTES */}
       <div className="rounded-2xl border border-white/[0.08] bg-[#0c1522] p-4 shadow-card space-y-3">

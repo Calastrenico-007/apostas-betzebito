@@ -13,12 +13,12 @@
 
 1. Create a new, empty Supabase project.
 2. Review `supabase/schema.sql`; it is destructive and drops existing tables. Run it only once against an empty project. It creates no events or example data.
-3. For an existing database created with the previous schema, run `supabase/migrations/20261009_email_password_auth.sql`, `supabase/migrations/20261009_security_set_odds.sql`, `supabase/migrations/20261009_manual_account_approval.sql`, `supabase/migrations/20261009_operator_credit_pool.sql`, `supabase/migrations/20261009_wallet_account_holder_name.sql`, and `supabase/migrations/20261009_bet_bonus_and_tax_settings.sql` in SQL Editor; do not rerun the destructive schema.
+3. For an existing database created with the previous schema, run the applicable migrations in order: `supabase/migrations/20261009_email_password_auth.sql`, `supabase/migrations/20261009_security_set_odds.sql`, `supabase/migrations/20261009_manual_account_approval.sql`, `supabase/migrations/20261009_operator_credit_pool.sql` (if not already applied), `supabase/migrations/20261009_wallet_account_holder_name.sql`, `supabase/migrations/20261009_bet_bonus_and_tax_settings.sql`, and `supabase/migrations/20261010_unlimited_admin_credits.sql`; do not rerun the destructive schema.
 4. Go to Authentication > Providers > Email. To replace email confirmation with manual account approval, disable Confirm email. New signups then receive a session but remain pending until an admin approves them.
 5. Manual admin approval does not independently verify identity or age. Perform any legally required checks separately before approving a user.
 6. Go to Authentication > URL Configuration and set the deployment URL to your Vercel domain.
 7. Check Database > Publications and ensure the lists include the tables used by realtime updates.
-8. In Admin > Users & Wallet, set the operator credit pool only to funds actually reserved for manual balance adjustments. The pool starts at zero and limits manual admin credits; it does not model total betting exposure or guarantee winnings coverage.
+8. In Admin > Users & Wallet, admin balance adjustments do not have a pre-funded pool limit and are recorded in the transaction ledger. These are internal credits, not evidence of money received and not a guarantee of funds for winnings or withdrawals. Approve deposits only after independently confirming receipt; process withdrawals manually after checking the available balance.
 9. In Admin > Taxas & Bónus, review the 0% default retention and +4% odds bonus for multiples with at least 5 selections. The operator can change both settings and the selection threshold. Retention applies to the full gross amount paid for wins and cash-outs (including the stake and any bonus), and each bet snapshots the settings at placement. Confirm any applicable rate with a qualified local professional; the app does not determine legal tax obligations.
 
 ## 3. Environment variables
