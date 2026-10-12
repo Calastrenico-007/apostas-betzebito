@@ -84,6 +84,11 @@ export default function MarketEditor({ market, editLabels, onChanged }: { market
           </div>
         )}
       </div>
+      {market.key === 'builder' && (
+        <p className="mb-2 rounded-lg border border-brand/20 bg-brand/10 p-2 text-xs text-brand-light">
+          Define e guarda a odd de cada combinação para a aprovar. Combinações sem odd não podem receber apostas.
+        </p>
+      )}
       <div className="grid gap-2 sm:grid-cols-3">
         {market.selections.map((s) => (
           <div key={s.id} className={`rounded-lg bg-panel2 p-2 ${s.result === 'ganha' ? 'ring-2 ring-brand' : ''}`}>

@@ -51,7 +51,7 @@ export default function AdminJogos() {
     setBusy(false);
     if (error) return toast(errMsg(error), 'erro');
 
-    toast('Partida criada com 7 mercados gerados automaticamente! Ajusta as odds agora.', 'ok');
+    toast('Partida criada com mercados de futebol gerados automaticamente. Ajusta as odds agora.', 'ok');
     router.push(`/admin/jogos/${(data as { id: string }).id}`);
   }
 
@@ -70,7 +70,7 @@ export default function AdminJogos() {
             <span>⚽</span> Registar Nova Partida de Futebol
           </h2>
           <span className="text-[11px] text-brand-light font-bold">
-            Gera automaticamente 7 mercados principais
+            Gera mercados de futebol automaticamente
           </span>
         </div>
 

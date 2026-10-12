@@ -15,13 +15,13 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#070d14',
+  themeColor: '#07111f',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-PT">
-      <body className="min-h-screen bg-[#070d14] text-slate-100 antialiased font-sans">
+      <body className="min-h-screen bg-bg text-slate-100 antialiased font-sans">
         <ToastProvider>
           <AuthProvider>
             <BetslipProvider>

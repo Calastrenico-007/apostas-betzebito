@@ -20,10 +20,10 @@ export default function EventosPage() {
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.08] pb-3">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-brand-light">
-            Mercados de Previsão
+            Mercados especiais
           </p>
           <h1 className="mt-0.5 text-2xl sm:text-3xl font-black text-white">
-            Previsões & Especiais da Feira
+            Apostas em eventos
           </h1>
         </div>
 
@@ -72,7 +72,7 @@ export default function EventosPage() {
       {recent.length > 0 && (
         <section className="space-y-3 pt-4 border-t border-white/[0.08]">
           <h2 className="text-base font-black text-white flex items-center gap-2">
-            <span>✓</span> Previsões Resolvidas Recentemente
+            <span>✓</span> Resultados recentes
           </h2>
 
           <div className="space-y-2">

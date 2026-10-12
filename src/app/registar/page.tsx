@@ -131,7 +131,7 @@ export default function RegisterPage() {
           <label className="flex items-start gap-2.5 text-xs text-slate-300 cursor-pointer pt-1">
             <input
               type="checkbox"
-              className="mt-0.5 h-4 w-4 rounded accent-emerald-500"
+              className="mt-0.5 h-4 w-4 rounded accent-blue-500"
               checked={adult}
               onChange={(e) => setAdult(e.target.checked)}
             />

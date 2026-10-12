@@ -59,6 +59,7 @@ export interface SportEvent {
   away_score: number | null;
   ht_home_score: number | null;
   ht_away_score: number | null;
+  total_cards: number | null;
   minute: string | null;
   proposed_by: string | null;
   winning_selection_id: string | null;

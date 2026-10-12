@@ -4,13 +4,13 @@
 
 :root {
   color-scheme: dark;
-  --betzebi-bg: #070d14;
-  --betzebi-panel: #0e1724;
-  --betzebi-panel-elevated: #132032;
+  --betzebi-bg: #07111f;
+  --betzebi-panel: #0d1a2c;
+  --betzebi-panel-elevated: #142541;
   --betzebi-line: rgba(255, 255, 255, 0.08);
-  --betzebi-brand: #10b981;
-  --betzebi-brand-mint: #34d399;
-  --betzebi-brand-ink: #022415;
+  --betzebi-brand: #3b82f6;
+  --betzebi-brand-mint: #60a5fa;
+  --betzebi-brand-ink: #061326;
   --betzebi-gold: #f59e0b;
   --betzebi-text: #f1f5f9;
   --betzebi-muted: #8e9eaf;
@@ -23,11 +23,11 @@ html {
 html,
 body {
   min-height: 100%;
-  background-color: #070d14 !important;
+  background-color: var(--betzebi-bg) !important;
   background:
-    radial-gradient(circle at 15% 0%, rgba(16, 185, 129, 0.12), transparent 32%),
-    radial-gradient(circle at 85% 10%, rgba(14, 165, 233, 0.06), transparent 28%),
-    linear-gradient(180deg, #070d14 0%, #09111b 100%) !important;
+    radial-gradient(circle at 15% 0%, rgba(37, 99, 235, 0.16), transparent 32%),
+    radial-gradient(circle at 85% 10%, rgba(14, 165, 233, 0.08), transparent 28%),
+    linear-gradient(180deg, #07111f 0%, #091626 100%) !important;
   color: var(--betzebi-text) !important;
 }
 
@@ -48,7 +48,7 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #09111b;
+  background: #091626;
 }
 ::-webkit-scrollbar-thumb {
   background: #1b283b;
@@ -63,7 +63,7 @@ body {
     @apply transition-colors duration-150;
   }
   ::selection {
-    background: rgba(16, 185, 129, 0.35);
+    background: rgba(59, 130, 246, 0.35);
     color: #ffffff;
   }
 }
@@ -119,16 +119,16 @@ body {
     border-radius: 0.75rem;
     width: 2.25rem;
     height: 2.25rem;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: #022415;
+    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+    color: #061326;
     font-size: 0.95rem;
     font-weight: 900;
-    box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
+    box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
   }
 
   .brand-wordmark {
     letter-spacing: -0.04em;
-    background: linear-gradient(135deg, #ffffff 20%, #a7f3d0 70%, #34d399 100%);
+    background: linear-gradient(135deg, #ffffff 20%, #bfdbfe 70%, #60a5fa 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

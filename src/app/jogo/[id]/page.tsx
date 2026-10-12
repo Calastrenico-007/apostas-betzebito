@@ -4,16 +4,38 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import OddsButton from '@/components/OddsButton';
 import StatusBadge from '@/components/StatusBadge';
+import BuildBetPanel from '@/components/BuildBetPanel';
 import { dateTime, dayLabel, eventIsOpen } from '@/lib/format';
 import { useEvents } from '@/lib/hooks/useEvents';
 
-type MarketFilter = 'todos' | '1x2' | 'golos' | 'dupla' | 'ambas' | 'intervalo';
+type MarketFilter = 'todos' | 'populares' | 'cartoes' | 'totais' | 'vencedor' | 'golos';
+
+function marketMatchesFilter(key: string, filter: MarketFilter) {
+  const isGoalsTotal = key.startsWith('ou');
+  const isCardTotal = key.startsWith('cards_total_');
+  const isHandicap = key.startsWith('hcp_');
+
+  switch (filter) {
+    case 'todos':
+      return true;
+    case 'populares':
+      return ['1x2', 'dc', 'dnb', 'btts', 'goals_exact'].includes(key) || isGoalsTotal || isHandicap;
+    case 'cartoes':
+      return isCardTotal;
+    case 'totais':
+      return isGoalsTotal || key === 'goals_exact';
+    case 'vencedor':
+      return ['1x2', 'dc', 'dnb'].includes(key) || isHandicap;
+    case 'golos':
+      return isGoalsTotal || key === 'goals_exact' || key === 'btts' || key === 'ht1x2';
+  }
+}
 
 export default function MatchPage() {
   const { id } = useParams<{ id: string }>();
   const { events, loading } = useEvents({ id });
   const e = events[0];
-  const [filter, setFilter] = useState<MarketFilter>('todos');
+  const [filter, setFilter] = useState<MarketFilter>('populares');
 
   if (loading) {
     return (
@@ -39,17 +61,7 @@ export default function MatchPage() {
   const showScore = e.status === 'ao_vivo' || e.status === 'terminado' || e.status === 'fechado';
   const isOpen = eventIsOpen(e, now);
 
-  const filterMarkets = (key: string) => {
-    if (filter === 'todos') return true;
-    if (filter === '1x2') return key === '1x2';
-    if (filter === 'golos') return key.startsWith('ou_') || key.includes('goals');
-    if (filter === 'dupla') return key === 'dc';
-    if (filter === 'ambas') return key === 'btts';
-    if (filter === 'intervalo') return key === 'ht_1x2';
-    return true;
-  };
-
-  const visibleMarkets = e.markets.filter((m) => filterMarkets(m.key));
+  const visibleMarkets = e.markets.filter((m) => m.key !== 'builder' && marketMatchesFilter(m.key, filter));
 
   return (
     <div className="space-y-5">
@@ -133,15 +145,17 @@ export default function MatchPage() {
         </div>
       </div>
 
+      {isOpen && <BuildBetPanel event={e} />}
+
       {/* Abas de Filtro de Mercados */}
       <div className="flex gap-1.5 overflow-x-auto pb-1 border-b border-white/[0.08]">
         {([
-          ['todos', 'Todos os Mercados'],
-          ['1x2', 'Resultado 1X2'],
-          ['golos', 'Golos (Mais/Menos)'],
-          ['dupla', 'Dupla Hipótese'],
-          ['ambas', 'Ambas Marcam'],
-          ['intervalo', 'Ao Intervalo'],
+          ['todos', 'Tudo'],
+          ['populares', 'Populares'],
+          ['cartoes', 'Cartões'],
+          ['totais', 'Totais'],
+          ['vencedor', 'Vencedor'],
+          ['golos', 'Golos'],
         ] as [MarketFilter, string][]).map(([k, label]) => (
           <button
             key={k}

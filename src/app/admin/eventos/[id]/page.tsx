@@ -304,7 +304,7 @@ export default function AdminEvento() {
                     <input
                       type="radio"
                       name="winner"
-                      className="accent-emerald-500"
+                      className="accent-blue-500"
                       checked={winner === s.id}
                       onChange={() => setWinner(s.id)}
                     />

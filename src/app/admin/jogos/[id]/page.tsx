@@ -17,7 +17,7 @@ export default function AdminJogo() {
   const { events, loading, reload } = useEvents({ id });
   const e = events[0];
 
-  const [res, setRes] = useState({ home: '', away: '', htHome: '', htAway: '' });
+  const [res, setRes] = useState({ home: '', away: '', htHome: '', htAway: '', totalCards: '' });
   const [liveScore, setLiveScore] = useState({ home: 0, away: 0, minute: '' });
   const [kickoff, setKickoff] = useState('');
   const [busy, setBusy] = useState(false);
@@ -35,6 +35,7 @@ export default function AdminJogo() {
       away: e.away_score != null ? String(e.away_score) : '',
       htHome: e.ht_home_score != null ? String(e.ht_home_score) : '',
       htAway: e.ht_away_score != null ? String(e.ht_away_score) : '',
+      totalCards: e.total_cards != null ? String(e.total_cards) : '',
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [e?.id]);
@@ -104,9 +105,13 @@ export default function AdminJogo() {
     const a = parseInt(res.away, 10);
     const htH = res.htHome ? parseInt(res.htHome, 10) : null;
     const htA = res.htAway ? parseInt(res.htAway, 10) : null;
+    const totalCards = res.totalCards.trim() ? Number(res.totalCards) : null;
 
     if (Number.isNaN(h) || Number.isNaN(a)) {
       return toast('Indica o resultado final completo', 'erro');
+    }
+    if (totalCards !== null && (!Number.isInteger(totalCards) || totalCards < 0)) {
+      return toast('O total de cartões deve ser um número inteiro igual ou superior a zero', 'erro');
     }
 
     if (
@@ -124,6 +129,7 @@ export default function AdminJogo() {
       p_away: a,
       p_ht_home: htH,
       p_ht_away: htA,
+      p_total_cards: totalCards,
     });
     setBusy(false);
 
@@ -396,7 +402,7 @@ export default function AdminJogo() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
             <div>
               <label className="label">Final — {e.home_team}</label>
               <input
@@ -441,6 +447,20 @@ export default function AdminJogo() {
                 onChange={(ev) => setRes({ ...res, htAway: ev.target.value })}
                 placeholder="0"
               />
+            </div>
+
+            <div>
+              <label className="label">Total de cartões (Opcional)</label>
+              <input
+                className="input text-center font-bold text-sm"
+                inputMode="numeric"
+                value={res.totalCards}
+                onChange={(ev) => setRes({ ...res, totalCards: ev.target.value })}
+                placeholder="Ex.: 5"
+              />
+              <p className="mt-1 text-[10px] text-slate-400">
+                Se não for indicado, as apostas de cartões serão anuladas e reembolsadas.
+              </p>
             </div>
           </div>
 

@@ -4,14 +4,10 @@ import { useState } from 'react';
 import MatchCard from '@/components/MatchCard';
 import SpecialEventCard from '@/components/SpecialEventCard';
 import { useEvents } from '@/lib/hooks/useEvents';
-import { useAuth } from '@/components/providers/AuthProvider';
-import { getOperationMode } from '@/lib/operation-mode';
 
 type Tab = 'tudo' | 'futebol' | 'especiais';
 
 export default function HomePage() {
-  const { user, profile } = useAuth();
-  const mode = getOperationMode();
   const [tab, setTab] = useState<Tab>('tudo');
   const [selectedLeague, setSelectedLeague] = useState<string>('todas');
 
@@ -31,86 +27,40 @@ export default function HomePage() {
     : upcomingMatches.filter((m) => (m.league || 'Futebol') === selectedLeague);
 
   return (
-    <div className="space-y-6">
-      {/* Hero Banner Esportivo Betzebi */}
-      <section className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-[#0c1624] via-[#09111b] to-[#060b11] p-5 sm:p-7 shadow-card">
-        {/* Efeitos de luz sutis */}
-        <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-brand/10 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-0 left-12 h-48 w-48 rounded-full bg-emerald-500/5 blur-3xl" />
-
-        <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-brand-light mb-3">
-            <span>⚽ Betzebi Sportsbook</span>
-            <span className="text-slate-500">·</span>
-            <span>{mode.label}</span>
-          </div>
-
-          <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white leading-tight">
-            Plataforma desportiva com <span className="brand-wordmark">gestão manual de carteira</span>.
-          </h1>
-
-          <p className="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
-            {user ? (
-              <>
-                Olá, <strong className="text-white">{profile?.username || 'Apostador'}</strong>. Consulta os eventos disponíveis e gere pedidos de carteira sujeitos a validação manual.
-              </>
-            ) : (
-              'Consulta os eventos disponíveis. Os pedidos de carteira são processados manualmente e a disponibilidade pública depende das validações necessárias.'
-            )}
-          </p>
-
-          <div className="mt-5 flex flex-wrap items-center gap-2.5">
-            {user ? (
-              <Link href="/carteira" className="btn-primary">
-                🪙 Ver Carteira
-              </Link>
-            ) : (
-              <Link href="/registar" className="btn-primary">
-                Criar Conta
-              </Link>
-            )}
-            <Link href="/eventos/propor" className="btn-ghost">
-              Propor Evento
-            </Link>
-          </div>
+    <div className="space-y-5">
+      <section className="flex flex-wrap items-end justify-between gap-3 border-b border-white/[0.08] pb-4">
+        <div>
+          <h1 className="text-2xl font-black tracking-tight text-white">Desporto</h1>
+          <p className="mt-1 text-sm text-slate-400">Escolhe um jogo para ver as odds.</p>
         </div>
-
-        {/* 3 Cartões de Informação Operacional */}
-        <div className="relative z-10 mt-6 grid gap-2.5 grid-cols-1 sm:grid-cols-3 pt-5 border-t border-white/[0.06]">
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 backdrop-blur-sm">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Modo</div>
-            <div className="mt-1 text-xl font-black text-white">{mode.badge}</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Processamento sujeito a validação manual</div>
-          </div>
-
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 backdrop-blur-sm">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Regra de Fecho</div>
-            <div className="mt-1 text-xl font-black text-brand-light">Apito Inicial</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Apostas fecham no início do jogo</div>
-          </div>
-
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 backdrop-blur-sm">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Pagamentos</div>
-            <div className="mt-1 text-xl font-black text-white">E-Mola</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Confirmação manual pelo operador</div>
-          </div>
+        <div className="flex items-center gap-2 text-xs text-slate-400">
+          {liveMatches.length > 0 && (
+            <span className="badge-live">
+              <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" />
+              {liveMatches.length} ao vivo
+            </span>
+          )}
+          <span className="rounded-full border border-white/[0.08] px-2.5 py-1">
+            {events.length} {events.length === 1 ? 'evento' : 'eventos'}
+          </span>
         </div>
       </section>
 
-      {/* Seletor de Categorias / Abas */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.08] pb-3">
-        <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0">
+      <div className="space-y-3">
+        <div className="flex gap-2 overflow-x-auto pb-1">
           {([
-            ['tudo', '🔥 Destaques'],
-            ['futebol', '⚽ Futebol'],
-            ['especiais', '🎯 Previsões'],
-          ] as [Tab, string][]).map(([k, l]) => (
+            ['tudo', 'Destaques'],
+            ['futebol', 'Futebol'],
+            ['especiais', 'Previsões'],
+          ] as [Tab, string][]).map(([key, label]) => (
             <button
-              key={k}
-              onClick={() => setTab(k)}
-              className={`tab ${tab === k ? 'tab-on' : 'tab-off'}`}
+              key={key}
+              type="button"
+              onClick={() => setTab(key)}
+              aria-pressed={tab === key}
+              className={`tab ${tab === key ? 'tab-on' : 'tab-off'}`}
             >
-              {l}
+              {label}
             </button>
           ))}
         </div>
@@ -118,26 +68,30 @@ export default function HomePage() {
         {tab === 'futebol' && availableLeagues.length > 1 && (
           <div className="flex gap-1.5 overflow-x-auto">
             <button
+              type="button"
               onClick={() => setSelectedLeague('todas')}
+              aria-pressed={selectedLeague === 'todas'}
               className={`rounded-lg px-2.5 py-1 text-xs font-bold transition ${
                 selectedLeague === 'todas'
                   ? 'bg-brand/20 text-brand-light ring-1 ring-brand/30'
                   : 'bg-white/[0.03] text-slate-400 hover:text-white'
               }`}
             >
-              Todas as Ligas
+              Todas
             </button>
-            {availableLeagues.map((lg) => (
+            {availableLeagues.map((league) => (
               <button
-                key={lg}
-                onClick={() => setSelectedLeague(lg)}
+                key={league}
+                type="button"
+                onClick={() => setSelectedLeague(league)}
+                aria-pressed={selectedLeague === league}
                 className={`rounded-lg px-2.5 py-1 text-xs font-bold transition ${
-                  selectedLeague === lg
+                  selectedLeague === league
                     ? 'bg-brand/20 text-brand-light ring-1 ring-brand/30'
                     : 'bg-white/[0.03] text-slate-400 hover:text-white'
                 }`}
               >
-                {lg}
+                {league}
               </button>
             ))}
           </div>
@@ -145,102 +99,69 @@ export default function HomePage() {
       </div>
 
       {loading && (
-        <div className="card text-center py-10 text-slate-400 animate-pulse">
-          A carregar mercados e cotações da Betzebi…
+        <div className="card animate-pulse py-8 text-center text-slate-400">
+          A carregar jogos…
         </div>
       )}
 
-      {/* Secção de Jogos Ao Vivo (Apenas exibida se houver partidas ao vivo) */}
-      {liveMatches.length > 0 && (tab === 'tudo' || tab === 'futebol') && (
+      {!loading && (tab === 'tudo' || tab === 'futebol') && liveMatches.length > 0 && (
         <section className="space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="badge-live">
-                <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" />
-                Em Direto
-              </span>
-              <h2 className="text-lg font-black text-white">Partidas Ao Vivo</h2>
-            </div>
-            <span className="text-xs text-slate-400 font-semibold">{liveMatches.length} jogos</span>
+          <div className="flex items-center gap-2">
+            <span className="badge-live">
+              <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" />
+              Ao vivo
+            </span>
+            <span className="text-xs text-slate-400">{liveMatches.length}</span>
           </div>
-
           <div className="grid gap-3 sm:grid-cols-2">
-            {liveMatches.map((m) => (
-              <MatchCard key={m.id} event={m} />
+            {liveMatches.map((match) => (
+              <MatchCard key={match.id} event={match} />
             ))}
           </div>
         </section>
       )}
 
-      {/* Secção de Próximos Jogos de Futebol */}
-      {(tab === 'tudo' || tab === 'futebol') && (
+      {!loading && (tab === 'tudo' || tab === 'futebol') && (
         <section className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-black text-white flex items-center gap-2">
-              <span>⚽</span> Próximos Jogos (Apostas Abertas)
-            </h2>
-            <span className="text-xs text-slate-400">
-              Encerram no pontapé de saída
-            </span>
+            <h2 className="text-base font-bold text-white">Próximos jogos</h2>
+            <span className="text-xs text-slate-500">{filteredMatches.length}</span>
           </div>
-
           {filteredMatches.length === 0 ? (
-            <div className="card text-center py-8 text-slate-400">
-              Não existem partidas agendadas nesta categoria no momento.
+            <div className="rounded-xl border border-white/[0.07] bg-panel px-4 py-5 text-sm text-slate-400">
+              Ainda não há jogos disponíveis.
             </div>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2">
-              {filteredMatches.map((m) => (
-                <MatchCard key={m.id} event={m} />
+              {filteredMatches.map((match) => (
+                <MatchCard key={match.id} event={match} />
               ))}
             </div>
           )}
         </section>
       )}
 
-      {/* Secção de Previsões & Eventos Especiais */}
-      {(tab === 'tudo' || tab === 'especiais') && specials.length > 0 && (
+      {!loading && (tab === 'tudo' || tab === 'especiais') && specials.length > 0 && (
         <section className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-black text-white flex items-center gap-2">
-              <span>🎯</span> Previsões & Eventos Especiais
-            </h2>
+            <h2 className="text-base font-bold text-white">Previsões</h2>
             <Link href="/eventos" className="text-xs font-bold text-brand-light hover:underline">
-              Ver Todas ({specials.length}) ›
+              Ver todas
             </Link>
           </div>
-
           <div className="grid gap-3 sm:grid-cols-2">
-            {(tab === 'tudo' ? specials.slice(0, 4) : specials).map((e) => (
-              <SpecialEventCard key={e.id} event={e} />
+            {(tab === 'tudo' ? specials.slice(0, 4) : specials).map((event) => (
+              <SpecialEventCard key={event.id} event={event} />
             ))}
           </div>
         </section>
       )}
 
-      <section className="rounded-2xl border border-white/[0.06] bg-[#09111b] p-4 text-xs text-slate-400">
-        <div className="font-bold text-slate-300 uppercase tracking-wider text-[11px] mb-2 flex items-center gap-1.5">
-          <span>ℹ️</span> Como apostar na Betzebi
+      {!loading && tab === 'especiais' && specials.length === 0 && (
+        <div className="rounded-xl border border-white/[0.07] bg-panel px-4 py-5 text-sm text-slate-400">
+          Ainda não há previsões disponíveis.
         </div>
-        <div className="grid gap-2 sm:grid-cols-4 text-slate-300">
-          <div className="rounded-xl bg-white/[0.02] p-2.5 border border-white/[0.04]">
-            <strong className="text-white block mb-0.5">1. Criação de Conta</strong>
-            Cria uma conta com e-mail e palavra-passe.
-          </div>
-          <div className="rounded-xl bg-white/[0.02] p-2.5 border border-white/[0.04]">
-            <strong className="text-white block mb-0.5">2. Aprovação da Conta</strong>
-            Aguarda a análise do administrador; a aprovação não confirma automaticamente identidade nem idade.
-          </div>
-          <div className="rounded-xl bg-white/[0.02] p-2.5 border border-white/[0.04]">
-            <strong className="text-white block mb-0.5">3. Montagem do Boletim</strong>
-            Escolhe os mercados e firma a aposta somente com o mercado aberto.
-          </div>
-          <div className="rounded-xl bg-white/[0.02] p-2.5 border border-white/[0.04]">
-            <strong className="text-white block mb-0.5">4. Liquidação</strong>
-            O operador valida o resultado, confirma os pagamentos e fecha o ciclo de forma auditável.
-          </div>
-        </div>
-      </section>
+      )}
     </div>
   );
 }

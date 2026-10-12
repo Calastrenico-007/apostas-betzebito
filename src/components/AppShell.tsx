@@ -41,15 +41,12 @@ function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-[#070d14]/90 backdrop-blur-md">
-      {/* Ticker Superior de Responsabilidade e Operação */}
-      <div className="border-b border-white/[0.05] bg-[#050a0f] py-1 text-center text-[10px] font-semibold tracking-wider text-slate-400">
-        <span className="inline-flex items-center gap-2">
-          <span className="font-bold text-brand-light">BETZEBI SPORTSBOOK</span>
+    <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-bg/90 backdrop-blur-md">
+      <div className="border-b border-white/[0.05] bg-[#06101d] px-3 py-1 text-center text-[10px] font-semibold text-slate-400">
+        <span className="inline-flex flex-wrap items-center justify-center gap-x-2">
+          <span>Pagamentos e-Mola confirmados manualmente</span>
           <span className="text-slate-600">·</span>
-          <span>Plataforma de apostas · Pagamentos manuais por e-Mola</span>
-          <span className="text-slate-600">·</span>
-          <span className="text-amber-400 font-bold">Idade mínima legal · Jogo responsável</span>
+          <span className="text-amber-400">Jogo responsável · Idade legal</span>
           {isPrivateTestMode && (
             <>
               <span className="text-slate-600">·</span>
@@ -149,27 +146,13 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="mx-auto mt-14 max-w-6xl border-t border-white/[0.08] px-4 pb-28 pt-8 text-xs text-slate-400 lg:pb-10">
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-        <Logo />
-        <div className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-full border border-red-500/40 bg-red-500/10 px-1 text-[8px] font-black text-red-400">
-            IDADE
-          </span>
-          <span className="font-bold text-slate-300">Jogo Responsável · Apostar pode criar dependência</span>
-        </div>
-      </div>
-
-      <p className="mb-2 text-slate-400 leading-relaxed max-w-4xl">
-        A <strong>Betzebi</strong> disponibiliza uma carteira com pedidos de depósito e levantamento por <strong>e-Mola</strong>, sujeitos a verificação manual pelo operador. A plataforma não confirma transferências junto do provedor.
+    <footer className="mx-auto mt-8 max-w-6xl border-t border-white/[0.08] px-4 pb-28 pt-5 text-[11px] text-slate-500 lg:pb-6">
+      <p>
+        e-Mola é processado manualmente; a plataforma não faz transferências. Apenas para maiores da idade legal aplicável. Joga com responsabilidade.
       </p>
-      <p className="mb-3 text-slate-500 leading-relaxed">
-        A disponibilidade para utilização pública depende de validação legal, operacional e de conformidade. Acesso apenas para pessoas com a idade mínima legal aplicável. Se o jogo estiver a causar dificuldades, procure serviços locais de saúde e apoio.
-      </p>
-
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.05] pt-4 text-[11px] text-slate-500">
-        <span>© {new Date().getFullYear()} Betzebi Sportsbook · Todos os direitos reservados</span>
-        <span>Plataforma Operacional Next.js + Supabase</span>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.05] pt-3">
+        <span>© {new Date().getFullYear()} Betzebi</span>
+        <span>Disponibilidade sujeita às validações legais aplicáveis.</span>
       </div>
     </footer>
   );
@@ -209,7 +192,7 @@ function SlipSheet() {
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => slip.setOpen(false)} />
-      <div className="absolute inset-x-0 bottom-0 max-h-[92vh] overflow-y-auto rounded-t-3xl bg-[#070d14] p-3 pb-6 border-t border-white/[0.1]">
+      <div className="absolute inset-x-0 bottom-0 max-h-[92vh] overflow-y-auto rounded-t-3xl bg-bg p-3 pb-6 border-t border-white/[0.1]">
         <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-white/20" />
         <Betslip onDone={() => slip.setOpen(false)} />
         <button
@@ -228,7 +211,7 @@ function BottomNav() {
   const slip = useBetslip();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-white/[0.08] bg-[#070d14]/95 backdrop-blur-md lg:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-white/[0.08] bg-bg/95 backdrop-blur-md lg:hidden">
       {NAV.map((n) => {
         const active = n.href === path;
         const inner = (
